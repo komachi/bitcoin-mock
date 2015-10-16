@@ -10,14 +10,14 @@ beforeEach(function(done) {
 
 describe('getBalance', function() {
   it('Should return balance', function(done) {
-    client._transactions['a'] = {
+    client._transactions.a = {
       amount: 1.1,
       confirmations: 6,
       details: [{
         account: 'a'
       }]
     };
-    client._transactions['b'] = {
+    client._transactions.b = {
       amount: 1.1,
       confirmations: 6,
       details: [{
@@ -80,7 +80,7 @@ describe('getBlock', function() {
       chainwork: 'x6obsp82p7sosesy3m3o752czwayajca0ni3swslbtjywg0qk7sddaod03mk4pxh',
       previousblockhash: 'x6obsp82p7sosesy3m3o752czwayajca0ni3swslbtjywg0qk7sddaod03mk4pxh',
       nextblockhash: 'x6obsp82p7sosesy3m3o752czwayajca0ni3swslbtjywg0qk7sddaod03mk4pxh'
-    };;
+    };
     client._blocks[block.hash] = block;
     client.getBlock(block.hash, function(err, reply) {
       expect(reply).toEqual(block);
@@ -149,10 +149,61 @@ describe('cmd', function() {
     {
       method: 'setaccount',
       params: ['n1ELtMuckRN5DYLPJg25UHcPaC2wg4eMmy', 'a']
-    }]);
-    expect(client._accounts.n1ELtMuckRN5DYLPJg25UHcPaC2wg4eMmy).toExist();
-    expect(client._accounts.n1ELtMuckRN5DYLPJg25UHcPaC2wg4eMmy.account).toBe('a');
-    done();
+    }], function() {
+      expect(client._accounts.n1ELtMuckRN5DYLPJg25UHcPaC2wg4eMmy).toExist();
+      expect(client._accounts.n1ELtMuckRN5DYLPJg25UHcPaC2wg4eMmy.account).toBe('a');
+      done();
+    });
+  });
+
+  it('Should return error to batch', function(done) {
+    client.cmd([{
+      method: 'setaccount',
+      params: ['a', 'a']
+    },
+    {
+      method: 'importprivkey',
+      params: ['KxiLb4ft6AZEk1RzJ9U35Cw7N4ACHcYrBhYKWhGTrUgT2pnjQ78q']
+    }], function(err) {
+      expect(err.message).toBe('setaccount can only be used with own address');
+      expect(client._accounts.n1ELtMuckRN5DYLPJg25UHcPaC2wg4eMmy).toNotExist();
+      done();
+    });
+  });
+
+  it('Should return array of replies when in batch', function(done) {
+    client._transactions.a = {
+      amount: 1.1,
+      confirmations: 6,
+      details: [{
+        account: 'a'
+      }]
+    };
+    var tr = {
+      amount: 1,
+      confirmations: 6,
+      txid: 'x6obsp82p7sosesy3m3o752czwayajca0ni3swslbtjywg0qk7sddaod03mk4pxh',
+      time: 1444951859,
+      details: [{
+        account: '',
+        address: 'mPqm42rauvwUXS522d3ND8SX88XZF99QM3',
+        category: 'receive',
+        amount: 1,
+        fee: 0.002
+      }]
+    };
+    client._transactions[tr.txid] = tr;
+    client.cmd([{
+      method: 'getbalance',
+      params: ['a', '6']
+    },
+    {
+      method: 'gettransaction',
+      params: [tr.txid]
+    }], function(err, reply) {
+      expect(reply).toEqual([1.1, tr]);
+      done();
+    });
   });
 });
 
@@ -166,7 +217,7 @@ describe('pushTransaction', function() {
 
 describe('pushBlock', function() {
   it('Should push block', function(done) {
-    client.pushBlock(6)
+    client.pushBlock(6);
     expect(client._blocks).toNotEqual({});
     done();
   });

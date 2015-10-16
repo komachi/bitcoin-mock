@@ -35,7 +35,10 @@ Creates a new block.
 
 Flush everything
 
-## What missing
+* _transactions, _blocks, _accounts
+
+Objects used to store information. By quering them you can check if your code works as expected.
+
+## What's missing
 
 * All unsupported commands
-* client.cmd doesn't support callbacks
