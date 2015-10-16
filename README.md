@@ -4,14 +4,14 @@ A simple nodejs library for mocking [bitcoin](https://npmjs.com/package/bitcoin)
 
 ## Usage
 
-``
+```js
 var bitcoinMock = require('bitcoin-mock');
 var client = new bitcoinMock.Client();
 
 client.getBalance('*', 6, function(err, reply) {
   console.log(reply); // 0
 });
-``
+```
 
 ## Supported commands
 
