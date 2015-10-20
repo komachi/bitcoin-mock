@@ -131,6 +131,21 @@ describe('setAccount', function() {
   });
 });
 
+describe('sendMany', function() {
+  it('Should send to many addresses', function(done) {
+    var many = {
+      m9jm62vLPCyga4RZ98hAp3QpepeudB29WD: 0.01,
+      mVPeXfiCuFqwa5k5Eck5MeHk5PuY3HhXrq: 0.01
+    };
+    client.sendMany('', many, function(err, reply) {
+      expect(reply).toExist();
+      expect(client._transactions[reply].amount).toBe(-0.02);
+      expect(client._transactions[reply].fee).toBe(-0.0004);
+      done();
+    });
+  });
+});
+
 describe('cmd', function() {
   it('Should work with commands', function(done) {
     client.cmd('importprivkey', 'KxiLb4ft6AZEk1RzJ9U35Cw7N4ACHcYrBhYKWhGTrUgT2pnjQ78q',
@@ -210,7 +225,7 @@ describe('cmd', function() {
 describe('pushTransaction', function() {
   it('Should push transaction', function(done) {
     client.pushTransaction('', 6, 'receive', 1);
-    expect(Object.keys(client._transactions)).toNotEqual([]);
+    expect(Object.keys(client._transactions)).toNotEqual({});
     done();
   });
 });

@@ -20,10 +20,11 @@ client.getBalance('*', 6, function(err, reply) {
 * getblock
 * importprivkey
 * setaccount
+* sendmany
 
 ## Additional commands
 
-* pushTransactions(account, confirmations, category, amount)
+* pushTransaction(account, confirmations, category, amount)
 
 Creates a new transaction.
 
