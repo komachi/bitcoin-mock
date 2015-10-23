@@ -146,6 +146,18 @@ describe('sendMany', function() {
   });
 });
 
+describe('sendToAddress', function() {
+  it('Should send to address', function(done) {
+    client.sendToAddress('m9jm62vLPCyga4RZ98hAp3QpepeudB29WD', 0.01,
+      function(err, reply) {
+        expect(reply).toExist();
+        expect(client._transactions[reply]).toExist();
+        done();
+      }
+    );
+  });
+});
+
 describe('cmd', function() {
   it('Should work with commands', function(done) {
     client.cmd('importprivkey', 'KxiLb4ft6AZEk1RzJ9U35Cw7N4ACHcYrBhYKWhGTrUgT2pnjQ78q',

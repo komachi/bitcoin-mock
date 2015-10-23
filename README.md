@@ -21,6 +21,7 @@ client.getBalance('*', 6, function(err, reply) {
 * importprivkey
 * setaccount
 * sendmany
+* sendtoaddress
 
 ## Additional commands
 
@@ -34,7 +35,7 @@ Creates a new block.
 
 * flush()
 
-Flush everything
+Flush everything.
 
 * _transactions, _blocks, _accounts
 
@@ -43,3 +44,4 @@ Objects used to store information. By quering them you can check if your code wo
 ## What's missing
 
 * All unsupported commands
+* Some commands don't support optional parameters

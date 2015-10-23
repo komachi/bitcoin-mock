@@ -1,6 +1,6 @@
 {
   "name": "bitcoin-mock",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Simple Bitcoin mock for testing",
   "main": "lib/bitcoinMock.js",
   "scripts": {
